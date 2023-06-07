@@ -1,0 +1,11 @@
+import math
+import pytest
+print('kod globalny potrzebny do inicjalizacji czegos...')
+def do_potegi(x, y):
+    r = x ** y
+    if type(r) is complex:
+        raise ValueError('Komunikat błędu')
+    return r
+
+if __name__ == '__main__':
+    print('akuku!!!!!!', __name__)
