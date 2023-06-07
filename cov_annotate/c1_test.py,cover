@@ -1,0 +1,65 @@
+> import math
+> import sys
+> from c1 import do_potegi
+> import random
+> import pytest
+  
+> """
+> 1. Mogą być ułamkowe podstawy i wykładniki.
+> 2. Działamy w przestrzeni liczb rzeczywistych, jeżeli wynik miałby być compext to oczekuję błędu:
+>    ValueError
+> 3. Maksymalne i minimalne wartości zgodne z zakresami int i float
+  
+> """
+  
+  
+> def test_manualne_ok_int():
+>     assert do_potegi(2, 2) == 4, '2**2 ma być 4'
+>     assert do_potegi(1, 7) == 1, '2**2 ma być 4'
+>     assert do_potegi(4, 3) == 64, '2**2 ma być 4'
+  
+  
+> def test_manualne_ok_float():
+>     assert do_potegi(1.1, 2) == pytest.approx(1.21)
+>     assert do_potegi(.1, 2) == pytest.approx(0.01)
+>     assert do_potegi(1., 2) == pytest.approx(1.)
+>     assert do_potegi(5., 2) == pytest.approx(25.)
+  
+  
+> def test_wyjatki():
+>     with pytest.raises(ValueError, match=r'.*'):
+>         do_potegi(-9, .5)
+>     with pytest.raises(ValueError, match=r'.*'):
+>         do_potegi(-2, .22225)
+>     with pytest.raises(ValueError, match=r'.*'):
+>         do_potegi(-9.12312, 0.123123)
+  
+  
+> def test_parzyszte_nieparzyste_losowe():
+>     for _ in range(10):
+>         podstawa = random.randint(-99999, -1)
+>         wykladnik = 2 * random.randint(1, 99999)
+>         r = do_potegi(podstawa, wykladnik)
+>         assert r > 0
+>         assert type(r) is int
+  
+>     for _ in range(10):
+>         podstawa = random.randint(-99999, -1)
+>         wykladnik = 2 * random.randint(1, 99999) + 1
+>         r = do_potegi(podstawa, wykladnik)
+>         assert r < 0
+>         assert type(r) is int
+  
+>     for _ in range(10):
+>         podstawa = - random.random() * 1e2
+>         wykladnik = 2 * random.randint(1, 9)
+>         assert do_potegi(podstawa, wykladnik) > 0
+  
+>     for _ in range(10):
+>         podstawa = - random.random() * 1e2
+>         wykladnik = 2 * random.randint(1, 9) + 1
+>         assert do_potegi(podstawa, wykladnik) < 0
+  
+  
+> if __name__ == "__main__":
+!     sys.exit(pytest.main([__file__, '-vv', '-s']))

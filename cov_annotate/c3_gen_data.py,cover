@@ -1,0 +1,102 @@
+! import json
+! import pickle
+! from pprint import pprint
+  
+! import c3
+! import random
+! import faker
+  
+! N = 3
+  
+! def gen_test_data(objects=False):
+!     f = faker.Faker('PL_pl')
+!     test_cases = {}
+!     test_cases['int'] = []
+!     for _ in range(N):
+!         t_c = {}
+!         imie = f.first_name()
+!         s_n = random.randint(1, 10) * 10
+!         s_nad = s_n * random.randint(2, 5)
+!         t_c['imie'] = imie
+!         t_c['s_normalna'] = s_n
+!         t_c['s_nadgodzinowa'] = s_nad
+!         p = c3.Pracownik(imie, stawka_normalna=s_n, stawka_nadgodzinowa=s_nad)
+!         t_c['dni'] = []
+!         for _ in range(random.randint(1, 100)):
+!             ile_h = random.randint(0, 24)
+!             t_c['dni'].append(ile_h)
+!             p.pracuj(ile_h)
+!         t_c['wyplata'] = p.wyplata()
+!         if objects:
+!             t_c['obiekt'] = p
+!         test_cases['int'].append(t_c)
+  
+!     test_cases['float'] = []
+!     for _ in range(N):
+!         t_c = {}
+!         imie = f.first_name()
+!         s_n = round(random.randint(1, 10000) / 100, 2)
+!         s_nad = round(s_n * random.randint(200, 500) / 100, 2)
+!         t_c['imie'] = imie
+!         t_c['s_normalna'] = s_n
+!         t_c['s_nadgodzinowa'] = s_nad
+!         p = c3.Pracownik(imie, stawka_normalna=s_n, stawka_nadgodzinowa=s_nad)
+!         t_c['dni'] = []
+!         for _ in range(random.randint(1, 100)):
+!             ile_h = round(random.randint(0, 2400) / 100, 2)
+!             t_c['dni'].append(ile_h)
+!             p.pracuj(ile_h)
+!         t_c['wyplata'] = round(p.wyplata(), 2)
+!         if objects:
+!             t_c['obiekt'] = p
+!         test_cases['float'].append(t_c)
+  
+!     test_cases['zerowe_czasy'] = []
+!     for _ in range(N):
+!         t_c = {}
+!         imie = f.first_name()
+!         s_n = round(random.randint(1, 10000) / 100, 2)
+!         s_nad = round(s_n * random.randint(200, 500) / 100, 2)
+!         t_c['imie'] = imie
+!         t_c['s_normalna'] = s_n
+!         t_c['s_nadgodzinowa'] = s_nad
+!         p = c3.Pracownik(imie, stawka_normalna=s_n, stawka_nadgodzinowa=s_nad)
+!         t_c['dni'] = []
+!         for _ in range(random.randint(1, 100)):
+!             ile_h = 0
+!             t_c['dni'].append(ile_h)
+!             p.pracuj(ile_h)
+!         t_c['wyplata'] = round(p.wyplata(), 2)
+!         if objects:
+!             t_c['obiekt'] = p
+!         test_cases['zerowe_czasy'].append(t_c)
+  
+!     test_cases['brak_pracy'] = []
+!     for _ in range(N):
+!         t_c = {}
+!         imie = f.first_name()
+!         s_n = round(random.randint(1, 10000) / 100, 2)
+!         s_nad = round(s_n * random.randint(200, 500) / 100, 2)
+!         t_c['imie'] = imie
+!         t_c['s_normalna'] = s_n
+!         t_c['s_nadgodzinowa'] = s_nad
+!         p = c3.Pracownik(imie, stawka_normalna=s_n, stawka_nadgodzinowa=s_nad)
+!         t_c['dni'] = []
+!         t_c['wyplata'] = round(p.wyplata(), 2)
+!         if objects:
+!             t_c['obiekt'] = p
+!         test_cases['brak_pracy'].append(t_c)
+  
+!     return test_cases
+  
+! if __name__ == '__main__':
+!     tcases = gen_test_data(objects=True)
+  
+!     with open('dane_testowe.pickle', 'wb') as f:
+!         pickle.dump(tcases, f)
+  
+!     tcases = gen_test_data()
+!     pprint(tcases)
+!     with open('dane_testowe.json', 'wt', encoding='utf8') as f:
+!         json.dump(tcases, f, ensure_ascii=False, indent=2)
+  

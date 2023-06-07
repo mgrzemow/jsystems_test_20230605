@@ -1,0 +1,16 @@
+# uruchomianie testow z markiem
+pytest -m moj_marker
+
+# z not
+pytest -m "not moj_marker"
+
+# mamy logike matematyczna:
+pytest -m "moj_marker or moj_marker2"
+
+# dokłdnie wyświetlanie informacji dla różnych kategorii testów (literki do doczytania z pytest --help)
+pytest -rxXs
+
+# tylko markery zdefiniowane w pytest.ini:
+pytest -m moj_marker --strict-markers
+
+
